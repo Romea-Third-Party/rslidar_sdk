@@ -62,13 +62,13 @@ inline sensor_msgs::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, const
 
   if (send_by_rows)
   {
-    ros_msg.width = rs_msg.width; 
-    ros_msg.height = rs_msg.height; 
+    ros_msg.width = rs_msg.width;
+    ros_msg.height = rs_msg.height;
   }
   else
   {
     ros_msg.width = rs_msg.height; // exchange width and height to be compatible with pcl::PointCloud<>
-    ros_msg.height = rs_msg.width; 
+    ros_msg.height = rs_msg.width;
   }
 
   int offset = 0;
@@ -81,7 +81,7 @@ inline sensor_msgs::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, const
   offset = addPointField(ros_msg, "timestamp", 1, sensor_msgs::PointField::FLOAT64, offset);
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
   offset = addPointField(ros_msg, "feature", 1, sensor_msgs::PointField::UINT8, offset);
 #endif
 
@@ -104,7 +104,7 @@ inline sensor_msgs::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, const
   sensor_msgs::PointCloud2Iterator<double> iter_timestamp_(ros_msg, "timestamp");
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
   sensor_msgs::PointCloud2Iterator<uint8_t> iter_feature_(ros_msg, "feature");
 #endif
 
@@ -134,11 +134,11 @@ inline sensor_msgs::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, const
         ++iter_timestamp_;
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
         *iter_feature_ = point.feature;
         ++iter_feature_;
 #endif
-        
+
       }
     }
   }
@@ -166,7 +166,7 @@ inline sensor_msgs::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, const
       ++iter_timestamp_;
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
         *iter_feature_ = point.feature;
         ++iter_feature_;
 #endif
@@ -209,9 +209,9 @@ public:
 #endif
 private:
   std::shared_ptr<ros::NodeHandle> nh_;
-  ros::Publisher pub_; 
+  ros::Publisher pub_;
 #ifdef ENABLE_IMU_DATA_PARSE
-  ros::Publisher imu_pub_; 
+  ros::Publisher imu_pub_;
 #endif
   std::string frame_id_;
   bool send_by_rows_;
@@ -219,7 +219,7 @@ private:
 
 inline void DestinationPointCloudRos::init(const YAML::Node& config)
 {
-  yamlRead<bool>(config["ros"], 
+  yamlRead<bool>(config["ros"],
       "ros_send_by_rows", send_by_rows_, false);
 
   bool dense_points;
@@ -227,11 +227,11 @@ inline void DestinationPointCloudRos::init(const YAML::Node& config)
   if (dense_points)
     send_by_rows_ = false;
 
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_frame_id", frame_id_, "rslidar");
 
   std::string ros_send_topic;
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_send_point_cloud_topic", ros_send_topic, "rslidar_points");
 
 
@@ -240,7 +240,7 @@ inline void DestinationPointCloudRos::init(const YAML::Node& config)
   pub_ = nh_->advertise<sensor_msgs::PointCloud2>(ros_send_topic, 10);
 #ifdef ENABLE_IMU_DATA_PARSE
   std::string ros_send_imu_data_topic;
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_send_imu_data_topic", ros_send_imu_data_topic, "rslidar_imu_data");
   imu_pub_ = nh_->advertise<sensor_msgs::Imu>(ros_send_imu_data_topic, 1000);
 #endif
@@ -291,13 +291,13 @@ inline sensor_msgs::msg::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, 
 
   if (send_by_rows)
   {
-    ros_msg.width = rs_msg.width; 
-    ros_msg.height = rs_msg.height; 
+    ros_msg.width = rs_msg.width;
+    ros_msg.height = rs_msg.height;
   }
   else
   {
     ros_msg.width = rs_msg.height; // exchange width and height to be compatible with pcl::PointCloud<>
-    ros_msg.height = rs_msg.width; 
+    ros_msg.height = rs_msg.width;
   }
 
   int offset = 0;
@@ -311,7 +311,7 @@ inline sensor_msgs::msg::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, 
   offset = addPointField(ros_msg, "timestamp", 1, sensor_msgs::msg::PointField::FLOAT64, offset);
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
   offset = addPointField(ros_msg, "feature", 1, sensor_msgs::msg::PointField::UINT8, offset);
 #endif
 
@@ -333,7 +333,7 @@ inline sensor_msgs::msg::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, 
   sensor_msgs::PointCloud2Iterator<double> iter_timestamp_(ros_msg, "timestamp");
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
   sensor_msgs::PointCloud2Iterator<uint8_t> iter_feature_(ros_msg, "feature");
 #endif
 
@@ -363,7 +363,7 @@ inline sensor_msgs::msg::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, 
       ++iter_timestamp_;
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
         *iter_feature_ = point.feature;
         ++iter_feature_;
 #endif
@@ -395,7 +395,7 @@ inline sensor_msgs::msg::PointCloud2 toRosMsg(const LidarPointCloudMsg& rs_msg, 
       ++iter_timestamp_;
 #endif
 
-#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF) 
+#if defined(POINT_TYPE_XYZIF) || defined(POINT_TYPE_XYZIRTF)
       *iter_feature_ = point.feature;
       ++iter_feature_;
 #endif
@@ -449,7 +449,7 @@ private:
 
 inline void DestinationPointCloudRos::init(const YAML::Node& config)
 {
-  yamlRead<bool>(config["ros"], 
+  yamlRead<bool>(config["ros"],
       "ros_send_by_rows", send_by_rows_, false);
 
   bool dense_points;
@@ -457,15 +457,17 @@ inline void DestinationPointCloudRos::init(const YAML::Node& config)
   if (dense_points)
     send_by_rows_ = false;
 
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_frame_id", frame_id_, "rslidar");
 
   std::string ros_send_topic;
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_send_point_cloud_topic", ros_send_topic, "rslidar_points");
 
   size_t ros_queue_length;
   yamlRead<size_t>(config["ros"], "ros_queue_length", ros_queue_length, 100);
+  rclcpp::QoS qos_profile(ros_queue_length);
+  qos_profile.best_effort();
 
   static int node_index = 0;
   std::stringstream node_name;
@@ -473,11 +475,11 @@ inline void DestinationPointCloudRos::init(const YAML::Node& config)
 
   node_ptr_.reset(new rclcpp::Node(node_name.str()));
 
-  pub_ = node_ptr_->create_publisher<sensor_msgs::msg::PointCloud2>(ros_send_topic, ros_queue_length);
+  pub_ = node_ptr_->create_publisher<sensor_msgs::msg::PointCloud2>(ros_send_topic, qos_profile);
 
 #ifdef ENABLE_IMU_DATA_PARSE
   std::string ros_send_imu_data_topic;
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_send_imu_data_topic", ros_send_imu_data_topic, "rslidar_imu_data");
   imu_pub_ = node_ptr_->create_publisher<sensor_msgs::msg::Imu>(ros_send_imu_data_topic, 1000);
 #endif

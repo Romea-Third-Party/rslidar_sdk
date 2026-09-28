@@ -55,7 +55,7 @@ inline Packet toRsMsg(const rslidar_msg::RslidarPacket& ros_msg)
   rs_msg.timestamp = ros_msg.header.stamp.toSec();
   rs_msg.seq = ros_msg.header.seq;
   rs_msg.is_difop = ros_msg.is_difop;
-  rs_msg.is_frame_begin = ros_msg.is_frame_begin; 
+  rs_msg.is_frame_begin = ros_msg.is_frame_begin;
 
   for (size_t i = 0; i < ros_msg.data.size(); i++)
   {
@@ -66,8 +66,8 @@ inline Packet toRsMsg(const rslidar_msg::RslidarPacket& ros_msg)
 }
 
 class SourcePacketRos : public SourceDriver
-{ 
-public: 
+{
+public:
 
   virtual void init(const YAML::Node& config);
 
@@ -106,7 +106,7 @@ void SourcePacketRos::init(const YAML::Node& config)
   lidar_type_ = strToLidarType(lidar_type);
 
   std::string ros_recv_topic_legacy;
-  yamlRead<std::string>(config["ros"], "ros_recv_packet_legacy_topic", 
+  yamlRead<std::string>(config["ros"], "ros_recv_packet_legacy_topic",
       ros_recv_topic_legacy, "rslidar_packets");
 
   pkt_sub_legacy_ = nh_->subscribe(ros_recv_topic_legacy, 1, &SourcePacketRos::putPacketLegacy, this);
@@ -114,12 +114,12 @@ void SourcePacketRos::init(const YAML::Node& config)
 #endif
 
   std::string ros_recv_topic;
-  yamlRead<std::string>(config["ros"], "ros_recv_packet_topic", 
+  yamlRead<std::string>(config["ros"], "ros_recv_packet_topic",
       ros_recv_topic, "rslidar_packets");
 
   pkt_sub_ = nh_->subscribe(ros_recv_topic, 100, &SourcePacketRos::putPacket, this);
 
-} 
+}
 
 #ifdef ENABLE_SOURCE_PACKET_LEGACY
 inline Packet toRsMsg(const rslidar_msgs::rslidarPacket& ros_msg, LidarType lidar_type, bool isDifop)
@@ -193,11 +193,11 @@ private:
 
 inline void DestinationPacketRos::init(const YAML::Node& config)
 {
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_frame_id", frame_id_, "rslidar");
 
   std::string ros_send_topic;
-  yamlRead<std::string>(config["ros"], "ros_send_packet_topic", 
+  yamlRead<std::string>(config["ros"], "ros_send_packet_topic",
       ros_send_topic, "rslidar_packets");
 
   nh_ = std::unique_ptr<ros::NodeHandle>(new ros::NodeHandle());
@@ -230,7 +230,7 @@ inline Packet toRsMsg(const rslidar_msg::msg::RslidarPacket& ros_msg)
   rs_msg.timestamp = ros_msg.header.stamp.sec + double(ros_msg.header.stamp.nanosec) / 1e9;
   //rs_msg.seq = ros_msg.header.seq;
   rs_msg.is_difop = ros_msg.is_difop;
-  rs_msg.is_frame_begin = ros_msg.is_frame_begin; 
+  rs_msg.is_frame_begin = ros_msg.is_frame_begin;
 
   for (size_t i = 0; i < ros_msg.data.size(); i++)
   {
@@ -241,8 +241,8 @@ inline Packet toRsMsg(const rslidar_msg::msg::RslidarPacket& ros_msg)
 }
 
 class SourcePacketRos : public SourceDriver
-{ 
-public: 
+{
+public:
 
   virtual void init(const YAML::Node& config);
 
@@ -260,13 +260,13 @@ SourcePacketRos::SourcePacketRos()
   : SourceDriver(SourceType::MSG_FROM_ROS_PACKET)
 {
 }
-void SourcePacketRos::spin(){rclcpp::spin(node_ptr_);}  
+void SourcePacketRos::spin(){rclcpp::spin(node_ptr_);}
 void SourcePacketRos::init(const YAML::Node& config)
 {
   SourceDriver::init(config);
 
   std::string ros_recv_topic;
-  yamlRead<std::string>(config["ros"], "ros_recv_packet_topic", 
+  yamlRead<std::string>(config["ros"], "ros_recv_packet_topic",
       ros_recv_topic, "rslidar_packets");
 
   static int node_index = 0;
@@ -274,10 +274,10 @@ void SourcePacketRos::init(const YAML::Node& config)
   node_name << "rslidar_packets_source_" << node_index++;
 
   node_ptr_.reset(new rclcpp::Node(node_name.str()));
-  pkt_sub_ = node_ptr_->create_subscription<rslidar_msg::msg::RslidarPacket>(ros_recv_topic, 100, 
+  pkt_sub_ = node_ptr_->create_subscription<rslidar_msg::msg::RslidarPacket>(ros_recv_topic, 100,
       std::bind(&SourcePacketRos::putPacket, this, std::placeholders::_1));
   subscription_spin_thread_ = std::thread(std::bind(&SourcePacketRos::spin,this));
-} 
+}
 
 void SourcePacketRos::putPacket(const rslidar_msg::msg::RslidarPacket::SharedPtr msg) const
 {
@@ -319,11 +319,11 @@ private:
 
 inline void DestinationPacketRos::init(const YAML::Node& config)
 {
-  yamlRead<std::string>(config["ros"], 
+  yamlRead<std::string>(config["ros"],
       "ros_frame_id", frame_id_, "rslidar");
 
   std::string ros_send_topic;
-  yamlRead<std::string>(config["ros"], "ros_send_packet_topic", 
+  yamlRead<std::string>(config["ros"], "ros_send_packet_topic",
       ros_send_topic, "rslidar_packets");
 
   size_t ros_queue_length;
